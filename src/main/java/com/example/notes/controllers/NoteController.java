@@ -1,5 +1,6 @@
 package com.example.notes.controllers;
 
+import com.example.notes.dto.NoteDto;
 import com.example.notes.models.Note;
 import com.example.notes.models.User;
 import com.example.notes.services.NoteService;
@@ -28,8 +29,16 @@ public class NoteController {
 
     @GetMapping("/note")
     public String getNotePage(@RequestParam(value = "note_id", required = false) Note note,
+                              Authentication authentication,
                               Model model){
-        if(note==null){
+
+        User user = userSrvice.getUserByEmail(authentication.getName());
+        if(note!=null){
+            if (noteService.isUserNote(note, user)){
+                model.addAttribute("note", note);
+            }else note = new Note();
+        }
+        else {
             note = new Note();
         }
         model.addAttribute("note", note);
@@ -37,14 +46,20 @@ public class NoteController {
     }
 
     @PostMapping("/note/create")
-    public String createNote(@RequestParam String text,
-                             @RequestParam String title,
+    public String createNote(NoteDto noteDto,
+                             @RequestParam(value = "note_id", required = false) Note note,
                              Model model,
                              Authentication authentication){
 
         User user = userSrvice.getUserByEmail(authentication.getName());
-        noteService.createNote(text,user, title);
-
+        if (note!=null){
+            if (noteService.isUserNote(note, user)){
+                noteService.editNote(noteDto.getText(), noteDto.getTitle(), note);
+            }
+        }
+        else {
+            noteService.createNote(noteDto.getText(), user, noteDto.getTitle());
+        }
         return "redirect:/welcome";
     }
 
@@ -54,7 +69,9 @@ public class NoteController {
                              Authentication authentication){
 
         User user = userSrvice.getUserByEmail(authentication.getName());
-        noteService.deleteNote(note);
+        if(noteService.isUserNote(note, user)){
+            noteService.deleteNote(note, user);
+        }
 
         return "redirect:/welcome";
     }

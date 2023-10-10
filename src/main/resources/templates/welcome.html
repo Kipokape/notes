@@ -14,7 +14,8 @@
             white-space: normal;
         }
         .card-title {
-            height: 60px;
+
+            height: 36pt;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: normal;
@@ -23,9 +24,14 @@
             position: relative;
         }
 
+        .text-muted {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
         .card-actions {
             position: absolute;
-            bottom: 10px;
+            bottom: 20px;
             left: 0;
             right: 0;
             text-align: center;
@@ -35,6 +41,10 @@
             margin-top: 10px;
         }
 
+        .btn-form {
+            display: inline-block;
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
@@ -44,14 +54,17 @@
         <div th:each="note : ${notes}" class="col-md-4">
             <div class="card mb-4 fixed-card">
                 <div class="card-body">
+                    <p class="text-muted" style="font-size: 14px; position: absolute; bottom: 0; left: 5px;"
+                       th:text="${#temporals.format(note.lastModified, 'dd.MM.yy HH:mm')}"></p>
+
                     <h5 class="card-title" th:text="${note.title}"></h5>
-                    <p class="card-text" th:text="${note.text}"></p>
+                    <div class="card-text" th:utext="${note.text}"></div>
                     <div class="card-actions">
-                        <form th:action="@{/note/delete}" method="post">
+                        <form th:action="@{/note/delete}" method="post" class="btn-form">
                             <input type="hidden" name="note_id" th:value="${note.id}">
                             <button type="submit" class="btn btn-danger btn-actions">Удалить</button>
                         </form>
-                        <form th:action="@{/note}" method="get">
+                        <form th:action="@{/note}" method="get" class="btn-form">
                             <input type="hidden" name="note_id" th:value="${note.id}">
                             <button type="submit" class="btn btn-primary btn-actions">Изменить</button>
                         </form>

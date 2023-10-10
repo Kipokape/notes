@@ -6,6 +6,7 @@ import com.example.notes.models.Role;
 import com.example.notes.models.User;
 import com.example.notes.repositories.RoleRepository;
 import com.example.notes.repositories.UserRepository;
+import com.example.notes.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -22,13 +23,17 @@ public class RegistrationController {
     private PasswordEncoder passwordEncoder;
     private RoleRepository roleRepository;
 
+    private NoteService noteService;
+
     @Autowired
     public RegistrationController(UserRepository userRepository,
                                   PasswordEncoder passwordEncoder,
-                                  RoleRepository roleRepository) {
+                                  RoleRepository roleRepository,
+                                  NoteService noteService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.noteService = noteService;
     }
 
     @GetMapping("/registration")
@@ -50,7 +55,10 @@ public class RegistrationController {
         Role roles = roleRepository.findByName("USER").get();
         user.setRoles(Collections.singletonList(roles));
 
+
         userRepository.save(user);
+        noteService.createNote("Пример текста", user, "Заметка 1");
+
 
         return "redirect:/login";
     }

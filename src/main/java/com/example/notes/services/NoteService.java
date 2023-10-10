@@ -6,7 +6,7 @@ import com.example.notes.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,13 +22,16 @@ public class NoteService {
     }
 
     public List<Note> getAllNoteByUser(User user){
-        Optional<List<Note>> notesOptional = noteRepository.findNoteByUser(user);
+        Optional<List<Note>> notesOptional = noteRepository.findNoteByUserOrderByLastModifiedDesc(user);
         if (notesOptional.isEmpty()) {
             throw new RuntimeException("Записи пользователя не найдены");
         }
         return notesOptional.get();
     }
 
+    public boolean isUserNote(Note note, User user){
+        return note.getUser() == user;
+    }
 
     public Note getNoteById(Long id){
         Optional<Note> noteOptional = noteRepository.findNoteById(id);
@@ -45,6 +48,7 @@ public class NoteService {
             note.setText(text);
             note.setUser(user);
             note.setTitle(title);
+            note.setLastModified(LocalDateTime.now());
             noteRepository.save(note);
             return note;
         }
@@ -54,9 +58,11 @@ public class NoteService {
         }
     }
 
-    public Note editNote(String text, Note note){
+    public Note editNote(String text, String title, Note note){
         try {
             note.setText(text);
+            note.setTitle(title);
+            note.setLastModified(LocalDateTime.now());
             noteRepository.save(note);
             return note;
         }
@@ -66,10 +72,13 @@ public class NoteService {
         }
     }
 
-    public boolean deleteNote(Note note){
+    public boolean deleteNote(Note note, User user){
         try {
-            noteRepository.delete(note);
-            return true;
+            if (isUserNote(note, user)){
+                noteRepository.delete(note);
+                return true;
+            }
+            return false;
         }
         catch (Exception e){
             e.printStackTrace();

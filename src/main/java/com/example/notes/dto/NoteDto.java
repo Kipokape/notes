@@ -8,5 +8,5 @@ public class NoteDto {
 
     private String title;
     private String text;
-    private User user;
+
 }
