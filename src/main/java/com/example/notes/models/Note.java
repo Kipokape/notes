@@ -17,6 +17,9 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String title;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String text;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)

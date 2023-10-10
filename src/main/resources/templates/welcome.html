@@ -2,11 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Заметки</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .fixed-card {
+            height: 400px;
+        }
+        .card-text {
+            height: 250px;
+            overflow: hidden;
+            white-space: normal;
+        }
+        .card-title {
+            height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+        }
+        .card-body {
+            position: relative;
+        }
+
+        .card-actions {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+
+        .btn-actions {
+            margin-top: 10px;
+        }
+
+    </style>
 </head>
 <body>
-Привет
+<div class="container mt-5">
+    <div class="row" th:if="${not #lists.isEmpty(notes)}">
+        <!-- Итерация по списку notes -->
+        <div th:each="note : ${notes}" class="col-md-4">
+            <div class="card mb-4 fixed-card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${note.title}"></h5>
+                    <p class="card-text" th:text="${note.text}"></p>
+                    <div class="card-actions">
+                        <form th:action="@{/note/delete}" method="post">
+                            <input type="hidden" name="note_id" th:value="${note.id}">
+                            <button type="submit" class="btn btn-danger btn-actions">Удалить</button>
+                        </form>
+                        <form th:action="@{/note}" method="get">
+                            <input type="hidden" name="note_id" th:value="${note.id}">
+                            <button type="submit" class="btn btn-primary btn-actions">Изменить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+Привет<span th:text="${#authentication.principal.username}"></span>
 <a href="/logout" class="btn btn-secondary mt-3">Выйти</a>
+<a href="/note" class="btn btn-primary">Создать заметку</a>
+<a href="/welcome" class="btn btn-secondary mt-3">Назад</a>
 </body>
 </html>
