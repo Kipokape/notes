@@ -1,0 +1,25 @@
+<div th:fragment="header">
+    <header>
+        <nav style="background-color: #cbf5ff" class="navbar navbar-expand-lg navbar-light fixed-top padding-bottom" >
+            <a class="navbar-brand mx-2" href="/welcome">Мои заметки</a>
+            <ul class="navbar-nav ml-auto align-items-center">
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a href="/note" class="btn btn-primary mx-2">Создать заметку</a>
+                </li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <span class="navbar-text mx-2" th:text="${#authentication.principal.username}">th:text="${#authentication.principal.username}"</span>
+                </li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a href="/logout" class="btn btn-secondary mx-2">Выйти</a>
+                </li>
+                <li th:unless="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a href="/login" class="btn btn-primary mx-2">Войти</a>
+                </li>
+                <li th:unless="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a href="/registration" class="btn btn-secondary mx-2">Зарегистрироваться</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+</div>
+

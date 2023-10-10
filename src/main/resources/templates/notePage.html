@@ -27,32 +27,37 @@
   </script>
 </head>
 <body>
-
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h4>Редактировать заметку</h4>
-        </div>
-        <div class="card-body">
-          <form th:action="@{/note/create}" method="post">
-            <div class="form-group" >
-              <label for="title">Заголовок:</label>
-              <input type="text" class="form-control" id="title" name="title" th:value="${note.title}" maxlength="255" required>
-            </div>
-            <div class="form-group">
-              <label for="text">Текст заметки:</label>
-              <textarea class="form-control" id="text" name="text" rows="4" th:text="${note.text}"></textarea>
-            </div>
-            <input type="hidden" name="note_id" th:value="${note.id}">
-            <button type="submit" class="btn btn-primary">Сохранить</button>
-          </form>
+<header th:insert="header :: header"></header>
+<main style="margin-top: 5%">
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h4>Редактировать заметку</h4>
+          </div>
+          <div class="card-body">
+            <form th:action="@{/note/create}" method="post">
+              <div class="form-group" >
+                <label for="title">Заголовок:</label>
+                <input type="text" class="form-control" id="title" name="title" th:value="${note.title}" maxlength="255" required>
+              </div>
+              <div class="form-group">
+                <label for="text">Текст заметки:</label>
+                <textarea class="form-control" id="text" name="text" rows="4" th:text="${note.text}"></textarea>
+              </div>
+              <input type="hidden" name="note_id" th:value="${note.id}">
+              <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+            <a href="/welcome" class="btn btn-secondary mt-3">Назад</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</main>
 
+
+<footer th:insert="footer :: footer"></footer>
 </body>
 </html>
