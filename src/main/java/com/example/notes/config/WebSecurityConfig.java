@@ -41,7 +41,7 @@ public class WebSecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/welcome",true)
+                .defaultSuccessUrl("/home",true)
                 .permitAll()
                 .and()
                 .logout()
@@ -49,7 +49,7 @@ public class WebSecurityConfig {
                 .logoutSuccessUrl("/login")
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("/welcome");
+                .accessDeniedPage("/home");
         return http.build();
 
 

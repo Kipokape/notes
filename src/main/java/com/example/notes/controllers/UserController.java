@@ -4,8 +4,7 @@ package com.example.notes.controllers;
 import com.example.notes.models.Note;
 import com.example.notes.models.User;
 import com.example.notes.services.NoteService;
-import com.example.notes.services.UserSrvice;
-import lombok.AllArgsConstructor;
+import com.example.notes.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -17,25 +16,25 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    UserSrvice userSrvice;
+    private UserService userService;
 
-    NoteService noteService;
+    private NoteService noteService;
 
     @Autowired
-    public UserController(UserSrvice userSrvice, NoteService noteService) {
-        this.userSrvice = userSrvice;
+    public UserController(UserService userService, NoteService noteService) {
+        this.userService = userService;
         this.noteService = noteService;
     }
 
 
-    @GetMapping("/welcome")
+    @GetMapping("/home")
     public String welcome(Model model,
                           Authentication authentication) {
 
-        User user = userSrvice.getUserByEmail(authentication.getName());
+        User user = userService.getUserByEmail(authentication.getName());
         List<Note> notes = noteService.getAllNoteByUser(user);
         model.addAttribute("notes", notes);
-        return "welcome";
+        return "home";
     }
 
     @GetMapping("/login")

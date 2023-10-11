@@ -7,6 +7,7 @@ import com.example.notes.models.User;
 import com.example.notes.repositories.RoleRepository;
 import com.example.notes.repositories.UserRepository;
 import com.example.notes.services.NoteService;
+import com.example.notes.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -20,20 +21,14 @@ import java.util.Collections;
 public class RegistrationController {
 
     private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
-    private RoleRepository roleRepository;
 
-    private NoteService noteService;
+    private UserService userService;
 
     @Autowired
     public RegistrationController(UserRepository userRepository,
-                                  PasswordEncoder passwordEncoder,
-                                  RoleRepository roleRepository,
-                                  NoteService noteService) {
+                                  UserService userService) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
-        this.noteService = noteService;
+        this.userService = userService;
     }
 
     @GetMapping("/registration")
@@ -43,23 +38,11 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String registration(RegisterDto registerDto, RedirectAttributes redirectAttributes) {
-        if (userRepository.existsByEmail(registerDto.getUsername())) {
+        if (userService.isExistsByEmailUser(registerDto.getUsername())) {
             redirectAttributes.addFlashAttribute("error", "Email занят!");
             return "redirect:/registration";
         }
-
-        User user = new User();
-        user.setEmail(registerDto.getUsername());
-        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-
-        Role roles = roleRepository.findByName("USER").get();
-        user.setRoles(Collections.singletonList(roles));
-
-
-        userRepository.save(user);
-        noteService.createNote("Пример текста", user, "Заметка 1");
-
-
+        userService.registrationUser(registerDto.getUsername(), registerDto.getPassword());
         return "redirect:/login";
     }
 

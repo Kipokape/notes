@@ -5,30 +5,11 @@
   <title>Редактировать заметку</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-  <script defer>
-    tinymce.init({
-      selector: '#text',
-      height: 400,
-      plugins: 'powerpaste casechange searchreplace autolink ' +
-              'directionality advcode visualblocks visualchars image link media ' +
-              'mediaembed codesample table charmap pagebreak nonbreaking anchor ' +
-              'tableofcontents insertdatetime advlist lists checklist ' +
-              'wordcount tinymcespellchecker editimage help formatpainter ' +
-              'permanentpen charmap tinycomments linkchecker emoticons advtable ' +
-              'export print autosave',
-      toolbar: "undo redo print spellcheckdialog formatpainter | " +
-              "fontfamily fontsize | bold italic underline forecolor backcolor | " +
-              "link image addcomment showcomments  | alignleft aligncenter alignright alignjustify lineheight |" +
-              " checklist bullist numlist indent outdent | removeformat",
-      menubar: 'insert',
-      images_file_types: "jpg,svg,webp,png",
-      block_unsupported_drop: true,
-    });
-  </script>
+  <script src="js/main.js" type="text/javascript" defer></script>
 </head>
 <body>
 <header th:insert="header :: header"></header>
-<main style="margin-top: 5%">
+<main style="margin-top: 100px">
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
@@ -49,7 +30,7 @@
               <input type="hidden" name="note_id" th:value="${note.id}">
               <button type="submit" class="btn btn-primary">Сохранить</button>
             </form>
-            <a href="/welcome" class="btn btn-secondary mt-3">Назад</a>
+            <a href="/home" class="btn btn-secondary mt-3">Назад</a>
           </div>
         </div>
       </div>

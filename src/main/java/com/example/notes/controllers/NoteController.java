@@ -4,10 +4,9 @@ import com.example.notes.dto.NoteDto;
 import com.example.notes.models.Note;
 import com.example.notes.models.User;
 import com.example.notes.services.NoteService;
-import com.example.notes.services.UserSrvice;
+import com.example.notes.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class NoteController {
 
-    NoteService noteService;
+    private NoteService noteService;
 
-    UserSrvice userSrvice;
+    private UserService userService;
 
     @Autowired
-    public NoteController(NoteService noteService, UserSrvice userSrvice) {
+    public NoteController(NoteService noteService, UserService userService) {
         this.noteService = noteService;
-        this.userSrvice = userSrvice;
+        this.userService = userService;
     }
 
     @GetMapping("/note")
@@ -32,7 +31,7 @@ public class NoteController {
                               Authentication authentication,
                               Model model){
 
-        User user = userSrvice.getUserByEmail(authentication.getName());
+        User user = userService.getUserByEmail(authentication.getName());
         if(note!=null){
             if (noteService.isUserNote(note, user)){
                 model.addAttribute("note", note);
@@ -51,7 +50,7 @@ public class NoteController {
                              Model model,
                              Authentication authentication){
 
-        User user = userSrvice.getUserByEmail(authentication.getName());
+        User user = userService.getUserByEmail(authentication.getName());
         if (note!=null){
             if (noteService.isUserNote(note, user)){
                 noteService.editNote(noteDto.getText(), noteDto.getTitle(), note);
@@ -60,7 +59,7 @@ public class NoteController {
         else {
             noteService.createNote(noteDto.getText(), user, noteDto.getTitle());
         }
-        return "redirect:/welcome";
+        return "redirect:/home";
     }
 
     @PostMapping("/note/delete")
@@ -68,12 +67,12 @@ public class NoteController {
                              Model model,
                              Authentication authentication){
 
-        User user = userSrvice.getUserByEmail(authentication.getName());
+        User user = userService.getUserByEmail(authentication.getName());
         if(noteService.isUserNote(note, user)){
             noteService.deleteNote(note, user);
         }
 
-        return "redirect:/welcome";
+        return "redirect:/home";
     }
 
 }
