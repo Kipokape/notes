@@ -2,14 +2,9 @@ package com.example.notes.controllers;
 
 
 import com.example.notes.dto.RegisterDto;
-import com.example.notes.models.Role;
-import com.example.notes.models.User;
-import com.example.notes.repositories.RoleRepository;
 import com.example.notes.repositories.UserRepository;
-import com.example.notes.services.NoteService;
 import com.example.notes.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,6 +1,5 @@
 package com.example.notes.dto;
 
-import com.example.notes.models.User;
 import lombok.Data;
 
 @Data

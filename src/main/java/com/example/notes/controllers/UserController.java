@@ -1,6 +1,5 @@
 package com.example.notes.controllers;
 
-
 import com.example.notes.models.Note;
 import com.example.notes.models.User;
 import com.example.notes.services.NoteService;
@@ -26,7 +25,6 @@ public class UserController {
         this.noteService = noteService;
     }
 
-
     @GetMapping("/home")
     public String welcome(Model model,
                           Authentication authentication) {
@@ -41,11 +39,6 @@ public class UserController {
     public String loginPage() {
         return "login";
     }
-
-
-
-
-
 
 
 }
