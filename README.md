@@ -1,6 +1,6 @@
 # Приложение заметки (notes)
 При разработке использовался Srping Boot 3.1.4, Java 17, Lombok, Spring Web, Thymeleaf, Spring Security, Spring Data JPA, PostgreSQL 15(через Docker, Docker Compose Support из Spring).
-Для разметки и стилей использовался bootstrap 4.5.2. По минимому использовался JS (вывод редактора TinyMCE).
+Для разметки и стилей использовался bootstrap 4.5.2. По минимому использовался JS (вывод редактора TinyMCE). Теперь TinyMCE локальный.
 
 
 
